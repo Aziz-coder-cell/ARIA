@@ -2,71 +2,165 @@
 
 ![Status](https://img.shields.io/badge/Status-Active%20Development-brightgreen)
 
-ARIA is a lightweight virtual assistant that takes user commands and performs actions like opening applications and responding to basic queries.
+ARIA is a lightweight virtual assistant that executes user commands, automates actions, and manages tasks using a modular Python architecture.
 
 ---
 
 ## What It Does
-- Accepts text-based user commands
-- Responds to greetings and basic questions 
-- Opens applications using system commands
+
+* Accepts text-based user commands
+* Responds to greetings and assistant queries
+* Opens desktop applications
+* Manages tasks using MySQL (CRUD operations)
 
 ---
 
-## Features (Current)
-> This is the first feature of the ARIA project.
+## Features (Current — Feature 1 & Feature 2 Completed)
 
-- Text-based assistant (command input system)
-- Basic conversation (hello, who are you, etc.)
-- App automation (open apps like Chrome, Brave)
+### Feature 1 — Assistant + Automation
+
+* Text-based assistant
+* Basic conversation
+* App automation
+
+### Feature 2 — Task Management
+
+* Add tasks
+* View tasks
+* Update task status
+* Delete tasks
+* Persistent storage using MySQL
 
 ---
 
 ## Supported Commands
-| Command | Response |
-|---|---|
-| hello / hi / hey | Greeting response |
-| who are you | Assistant introduction |
-| what can you do | Lists capabilities |
-| open chrome / open brave | Opens the application |
-| exit | Exits the assistant |
 
-> **Note:** Commands are case-insensitive but punctuation-sensitive. Type commands exactly as shown above.
+| Command          | Action                 |
+| ---------------- | ---------------------- |
+| hello / hi / hey | Greeting response      |
+| who are you      | Assistant introduction |
+| what can you do  | Lists capabilities     |
+| open chrome      | Opens Chrome           |
+| open brave       | Opens Brave            |
+| add task         | Adds task              |
+| view tasks       | Displays tasks         |
+| update task      | Updates task status    |
+| delete task      | Deletes task           |
+| exit             | Closes assistant       |
+
+> Commands are case-insensitive and punctuation-sensitive.
+
+---
+
+## Architecture Flow
+
+```plaintext
+User → Assistant → Command Handler → App / Database
+```
 
 ---
 
 ## Demo
 
-**Assistant Running:**
-![Project Setup](assets/Screenshot(1).png)
+### Feature 1 — Assistant + Automation
+
+![Assistant Running](assets/Screenshot\(1\).png)
+
+### Feature 2 — Task Management (CRUD)
+
+Supports:
+
+* Add task
+* View tasks
+* Update task status
+* Delete task
+
+![Task Management Demo](assets/Screenshot%20(2)CRUD.png)
 
 ---
 
 ## Tech Stack
-- Python
-- subprocess (built-in Python module)
+
+* Python
+* MySQL
+* PyMySQL
+* subprocess
+
+---
+
+## Requirements
+
+* Python 3.x
+* MySQL installed
+
+---
+
+## Project Structure
+
+```plaintext
+ARIA/
+├── main.py
+├── assistant.py
+├── app_automation.py
+├── tasks.py
+├── db.py
+├── assets/
+│ ├── Screenshot(1).png
+│ └── Screenshot(2).png
+├── requirements.txt
+└── README.md
+```
 
 ---
 
 ## How to Run
 
-1. Clone the repository:
+### 1. Clone repository
+
 ```bash
-git clone <your-repo-link>
-cd <repo-folder>
+git clone https://github.com/Aziz-coder-cell/ARIA.git
+cd ARIA
 ```
 
-2. Run the assistant:
+### 2. Install dependencies
+
 ```bash
-python aria.py
+pip install -r requirements.txt
 ```
 
-> **Note:** App paths in `open_app()` are set for Windows. Update the paths in the `app_paths` dictionary inside `aria.py` to match your system.
+### 3. Configure database
+
+Create database:
+
+```sql
+CREATE DATABASE aria_db;
+```
+
+Create table:
+
+```sql
+CREATE TABLE tasks(
+id INT AUTO_INCREMENT PRIMARY KEY,
+title VARCHAR(225),
+status VARCHAR(50)
+);
+```
+
+### 4. Run project
+
+```bash
+python main.py
+```
 
 ---
 
-## Note
-This is an early-stage project, actively being developed. More features like AI Q&A, task management, and voice integration will be added progressively.
+## Upcoming Features
+
+* AI Q&A
+* Planning assistant
+* PPT generation
+* Research support
+* Voice integration
 
 ---
 

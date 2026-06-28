@@ -1,6 +1,7 @@
 from tasks import add_task, view_tasks, update_task, delete_task
 from app_automation import open_app
 from db import close_connection
+from ai import ask_gemini
 
 def run_assistant():
     while True:
@@ -48,5 +49,16 @@ def run_assistant():
                 continue
             delete_task(task_id)
 
+        elif cmd.startswith("ask"):
+            prompt = input("What would you like to ask? ")
+            while prompt != "back":
+                if prompt == '':
+                    print("Please enter a valid question.") 
+                    prompt = input("What would you like to ask? ") 
+                    continue
+                response = ask_gemini(prompt)
+                print(f"Gemini's response: {response}")
+                prompt = input("Would you like to continue the chat or type 'back' to return to the main menu? ")
+            
         else:
             print("Sorry, I didn't understand that command. Please try again.")

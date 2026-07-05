@@ -1,7 +1,7 @@
 from tasks import add_task, view_tasks, update_task, delete_task
 from app_automation import open_app
 from db import close_connection
-from ai import ask_gemini
+from ai import ask_gemini, make_plan
 
 def run_assistant():
     while True:
@@ -50,15 +50,38 @@ def run_assistant():
             delete_task(task_id)
 
         elif cmd.startswith("ask"):
+            chat_history = []
             prompt = input("What would you like to ask? ")
             while prompt != "back":
                 if prompt == '':
                     print("Please enter a valid question.") 
                     prompt = input("What would you like to ask? ") 
                     continue
-                response = ask_gemini(prompt)
+                chat_history.append({'role':'user','parts' : [{'text': prompt}]})
+                response = ask_gemini(chat_history)
                 print(f"Gemini's response: {response}")
                 prompt = input("Would you like to continue the chat or type 'back' to return to the main menu? ")
-            
+        
+        elif cmd == "plan my day":
+            sub_cmd = 'xyz'
+            details = []
+            task_details = []
+            print("Please enter the tasks you need to complete for the day. Type 'done' when you are finished.")
+            date = input("Enter the date for the tasks (YYYY-MM-DD): ")
+            while sub_cmd.lower() != "done":
+                sub_cmd = input("Enter a task: ")
+                if sub_cmd.strip() == "":
+                    print("Please enter a valid task name.")
+                    continue
+                elif sub_cmd.lower() == "done":
+                    break
+                else:
+                    estimated_duration = input("Enter the estimated duration for the task (in hours): ")
+                    priority = input("Enter the priority level for the task (low,medium,high): ")
+                    details.append(f"Task: {sub_cmd}, estimated_duration: {estimated_duration}, priority: {priority}\n")
+            task_details.append({'role': 'user', 'parts': [{'text': f"Date: {date} \n Using the following details, please plan my day and keep the available time in mind:\n"  + ''.join(details)}]})
+            text = make_plan(task_details)
+            print(f"Gemini's response: {text}")
+
         else:
             print("Sorry, I didn't understand that command. Please try again.")

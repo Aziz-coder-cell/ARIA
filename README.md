@@ -2,7 +2,7 @@
 
 ![Status](https://img.shields.io/badge/Status-Active%20Development-brightgreen)
 
-ARIA is a lightweight virtual assistant that executes user commands, automates desktop tasks, manages tasks using MySQL, and answers user queries using Google's Gemini AI.
+ARIA is a lightweight AI-powered personal assistant built in Python that executes user commands, automates desktop tasks, manages tasks using MySQL, answers questions using Google's Gemini AI, and helps users plan their day intelligently.
 
 ---
 
@@ -12,24 +12,29 @@ ARIA is a lightweight virtual assistant that executes user commands, automates d
 - Automates desktop applications
 - Manages tasks using MySQL (CRUD operations)
 - Answers questions using Google Gemini AI
+- Generates AI-powered daily schedules based on tasks and priorities
 
 ---
 
-## Features (Current — Feature 1 to Feature 4 Completed)
+## Features
 
-### Feature 1 — Text-Based Assistant
+### ✅ Feature 1 — Text-Based Assistant
 
-- Accepts text-based user commands
+- Accepts text-based commands
 - Basic conversation
-- Command handling
+- Command routing
 
-### Feature 2 — App Automation
+---
+
+### ✅ Feature 2 — App Automation
 
 - Opens desktop applications
-- Supports Chrome and Brave
+- Supports launching Chrome and Brave
 - Executes system-level commands
 
-### Feature 3 — Task Management
+---
+
+### ✅ Feature 3 — Task Management
 
 - Add tasks
 - View tasks
@@ -37,12 +42,35 @@ ARIA is a lightweight virtual assistant that executes user commands, automates d
 - Delete tasks
 - Persistent storage using MySQL
 
-### Feature 4 — AI Q&A
+---
+
+### ✅ Feature 4 — AI Q&A
 
 - Ask questions using Google Gemini
-- Multi-turn conversation
+- Multi-turn conversations
 - Secure API key management using environment variables
 - Error handling for API failures
+
+---
+
+### 🟡 Feature 5 — Smart Day Planner (In Progress)
+
+Generate a structured day plan by providing:
+
+- Date
+- Tasks
+- Estimated duration
+- Priority level
+
+ARIA generates a personalized daily schedule using Google Gemini AI.
+
+- Focus blocks
+- Breaks
+- Meal timings
+- Buffer time
+- Productivity suggestions
+
+> **Status:** Working but still under development with more improvements planned.
 
 ---
 
@@ -60,58 +88,83 @@ ARIA is a lightweight virtual assistant that executes user commands, automates d
 | update task | Updates task status |
 | delete task | Deletes a task |
 | ask | Starts an AI conversation |
+| plan my day | Generates an AI-powered daily schedule |
 | exit | Closes the assistant |
 
-> Commands are case-insensitive and punctuation-sensitive.
+> Commands are case-insensitive.
 
 ---
 
 ## Architecture Flow
 
 ```text
-                 User
-                   │
-                   ▼
-             Assistant
-                   │
-        ┌──────────┼──────────┐
-        ▼          ▼          ▼
- App Automation   MySQL     Gemini API
-      │            │            │
-      ▼            ▼            ▼
- Opens Apps     CRUD Tasks   AI Responses
+                    User
+                      │
+                      ▼
+                Assistant
+      ┌──────────┼──────────┬──────────┐
+      ▼          ▼          ▼          ▼
+ App Automation MySQL    Gemini AI   Day Planner
+      │          │          │          │
+      ▼          ▼          ▼          ▼
+ Opens Apps   CRUD Tasks AI Answers Daily Schedule
 ```
 
 ---
 
 ## Demo
 
-### Feature 1 — Text-Based Assistant & App Automation
+### Feature 1 — Text Assistant & App Automation
 
 ![Assistant Demo](assets/Screenshot(1).png)
 
 ---
 
-### Feature 3 — Task Management (CRUD)
+### Feature 3 — Task Management
 
 Supports:
-- Add task
-- View tasks
-- Update task status
-- Delete task
 
-![Task Management Demo](assets/Screenshot%20(2)CRUD.png)
+- Add Task
+- View Tasks
+- Update Task
+- Delete Task
+
+![Task Management](assets/Screenshot%20(2)CRUD.png)
 
 ---
 
 ### Feature 4 — AI Q&A
 
 Supports:
-- Ask questions using Gemini AI
-- Continue conversation
-- Return to the main menu
 
-![AI Q&A Demo](assets/Screenshot%20(3).png)
+- Ask questions
+- Multi-turn conversation
+- Return to main menu
+
+![AI Demo](assets/Screenshot%20(3).png)
+
+---
+
+### Feature 5 — Smart Day Planner
+
+Provide:
+
+- Date
+- Tasks
+- Estimated duration
+- Priority
+
+ARIA generates an optimized schedule using Gemini AI.
+
+### Input
+
+![Planner Input](assets/Screenshot%20(4).png)
+
+### Generated Plan
+
+![Planner Output 1](assets/Screenshot%20(5).png)
+
+![Planner Output 2](assets/Screenshot%20(6).png)
 
 ---
 
@@ -120,7 +173,8 @@ Supports:
 - Python
 - MySQL
 - PyMySQL
-- Google Gemini API
+- Google Gemini 2.5 Flash Lite
+- Google GenAI SDK
 - python-dotenv
 - subprocess
 
@@ -138,10 +192,15 @@ Supports:
 
 ```text
 ARIA/
+│
 ├── assets/
 │   ├── Screenshot(1).png
 │   ├── Screenshot (2)CRUD.png
-│   └── Screenshot (3).png
+│   ├── Screenshot (3).png
+│   ├── Screenshot (4).png
+│   ├── Screenshot (5).png
+│   └── Screenshot (6).png
+│
 ├── ai.py
 ├── app_automation.py
 ├── assistant.py
@@ -162,6 +221,7 @@ ARIA/
 
 ```bash
 git clone https://github.com/Aziz-coder-cell/ARIA.git
+
 cd ARIA
 ```
 
@@ -179,31 +239,43 @@ Create the database:
 CREATE DATABASE aria_db;
 ```
 
-Create the table:
+Create the `tasks` table:
 
 ```sql
 CREATE TABLE tasks (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(225),
-    status VARCHAR(50)
+    status VARCHAR(50),
+    scheduled_date DATE,
+    estimated_duration TIME,
+    priority VARCHAR(30)
 );
 ```
 
+| Column | Description |
+|---------|-------------|
+| id | Unique task ID |
+| title | Task title |
+| status | Current task status (e.g., pending, completed) |
+| scheduled_date | Date assigned to the task |
+| estimated_duration | Estimated time required to complete the task |
+| priority | Priority level (Low, Medium, High) |
+
 ### 4. Configure Environment Variables
 
-Copy the example environment file:
+Copy
 
 ```bash
 cp .env.example .env
 ```
 
-Open `.env` and add your Gemini API key:
+Add your API key
 
 ```env
 GEMINI_API_KEY=your_api_key_here
 ```
 
-> **Windows users:** If `cp` is unavailable, simply duplicate `.env.example` and rename the copy to `.env`.
+> Windows users can simply duplicate `.env.example` and rename it to `.env`.
 
 ### 5. Run the project
 
@@ -213,13 +285,24 @@ python main.py
 
 ---
 
-## Upcoming Features
+## Roadmap
 
-- Planning Assistant
+### ✅ Completed
+
+- Text-Based Assistant
+- App Automation
+- Task Management (MySQL CRUD)
+- AI Q&A
+
+### 🟡 In Progress
+
+- Smart Day Planner
+
+### ⏳ Planned
+
 - PPT Generation
 - Research Assistant
 - Voice Integration
-- Smart System Automation
 - File Management
 - Calendar & Reminder Integration
 - Email Automation

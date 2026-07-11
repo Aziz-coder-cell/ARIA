@@ -1,10 +1,10 @@
 from db import connection, cursor
 import pymysql
 
-def add_task(title, status='pending'):
-    mysql = "insert into tasks(title,status) values (%s,%s)"
+def add_task(title,scheduled_date, estimated_duration,priority,status='pending'):
+    mysql = "insert into tasks(title,status,scheduled_date, estimated_duration,priority) values (%s,%s,%s,%s,%s)"
     try:
-        cursor.execute(mysql, (title, status))
+        cursor.execute(mysql, (title, status, scheduled_date, estimated_duration, priority))
         connection.commit()
     except pymysql.MySQLError:
         print("Error: Unable to add task.")
@@ -20,6 +20,17 @@ def view_tasks():
         return
     for task in tasks:
         print(f"ID: {task[0]}, Title: {task[1]}, Status: {task[2]}")
+
+def view_plan():
+    mysql = "select * from tasks where status = 'scheduled'"
+    try:
+        cursor.execute(mysql)
+        tasks = cursor.fetchall()
+    except pymysql.MySQLError:
+        print("Error: Unable to retrieve scheduled tasks.")
+        return
+    for task in tasks:
+        print(f"ID: {task[0]}, Title: {task[1]}, Status: {task[2]}, Scheduled Date: {task[3]}, Estimated Duration: {task[4]} hours, Priority: {task[5]}")
 
 def update_task(task_id, status):
     mysql = "update tasks set status=%s where id=%s"

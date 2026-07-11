@@ -2,7 +2,7 @@
 
 ![Status](https://img.shields.io/badge/Status-Active%20Development-brightgreen)
 
-ARIA is a lightweight AI-powered personal assistant built in Python that executes user commands, automates desktop tasks, manages tasks using MySQL, answers questions using Google's Gemini AI, and helps users plan their day intelligently.
+ARIA is a lightweight AI-powered personal assistant built in Python that executes user commands, automates desktop tasks, manages tasks using MySQL, answers questions using Google's Gemini AI, and intelligently plans your day.
 
 ---
 
@@ -12,7 +12,8 @@ ARIA is a lightweight AI-powered personal assistant built in Python that execute
 - Automates desktop applications
 - Manages tasks using MySQL (CRUD operations)
 - Answers questions using Google Gemini AI
-- Generates AI-powered daily schedules based on tasks and priorities
+- Generates AI-powered daily schedules
+- Saves accepted plans for future reference
 
 ---
 
@@ -53,24 +54,22 @@ ARIA is a lightweight AI-powered personal assistant built in Python that execute
 
 ---
 
-### 🟡 Feature 5 — Smart Day Planner (In Progress)
+### ✅ Feature 5 — Smart Day Planner
 
-Generate a structured day plan by providing:
+Generate an AI-powered daily schedule by providing:
 
 - Date
 - Tasks
 - Estimated duration
 - Priority level
 
-ARIA generates a personalized daily schedule using Google Gemini AI.
+Features:
 
-- Focus blocks
-- Breaks
-- Meal timings
-- Buffer time
-- Productivity suggestions
-
-> **Status:** Working but still under development with more improvements planned.
+- AI-generated schedule
+- User feedback loop (accept/reject)
+- Regenerates plan based on feedback
+- Save accepted plans to MySQL
+- View saved plans anytime
 
 ---
 
@@ -89,6 +88,7 @@ ARIA generates a personalized daily schedule using Google Gemini AI.
 | delete task | Deletes a task |
 | ask | Starts an AI conversation |
 | plan my day | Generates an AI-powered daily schedule |
+| view plan | Displays saved daily plans |
 | exit | Closes the assistant |
 
 > Commands are case-insensitive.
@@ -98,16 +98,28 @@ ARIA generates a personalized daily schedule using Google Gemini AI.
 ## Architecture Flow
 
 ```text
-                    User
-                      │
-                      ▼
-                Assistant
-      ┌──────────┼──────────┬──────────┐
-      ▼          ▼          ▼          ▼
- App Automation MySQL    Gemini AI   Day Planner
-      │          │          │          │
-      ▼          ▼          ▼          ▼
- Opens Apps   CRUD Tasks AI Answers Daily Schedule
+                            User
+                              │
+                              ▼
+                        Assistant (Router)
+                              │
+     ┌──────────────┬──────────┼──────────────┐
+     ▼              ▼          ▼              ▼
+App Automation   Task Manager  AI Module   Planner
+     │              │            │            │
+     ▼              ▼            ▼            ▼
+ Opens Apps      MySQL CRUD   Gemini API   Collects Task Details
+      │              ▲            ▲            │
+      └──────────────┴────────────┴────────────┘
+                              │
+                              ▼
+                    Generates Daily Plan
+                              │
+                              ▼
+                   Save accepted tasks to MySQL (Optional)
+                              │
+                              ▼
+                    View Saved Plan (`view plan`)
 ```
 
 ---
@@ -156,15 +168,19 @@ Provide:
 
 ARIA generates an optimized schedule using Gemini AI.
 
-### Input
+#### Planner Input
 
 ![Planner Input](assets/Screenshot%20(4).png)
 
-### Generated Plan
+#### Generated Plan
 
 ![Planner Output 1](assets/Screenshot%20(5).png)
 
 ![Planner Output 2](assets/Screenshot%20(6).png)
+
+#### View Saved Plan
+
+![View Plan](assets/Screenshot%20(7).png)
 
 ---
 
@@ -173,8 +189,9 @@ ARIA generates an optimized schedule using Gemini AI.
 - Python
 - MySQL
 - PyMySQL
-- Google Gemini 2.5 Flash Lite
+- Google Gemini API (2.5 Flash Lite)
 - Google GenAI SDK
+- Google AI Studio
 - python-dotenv
 - subprocess
 
@@ -199,14 +216,16 @@ ARIA/
 │   ├── Screenshot (3).png
 │   ├── Screenshot (4).png
 │   ├── Screenshot (5).png
-│   └── Screenshot (6).png
+│   ├── Screenshot (6).png
+│   └── Screenshot (7).png
 │
 ├── ai.py
 ├── app_automation.py
 ├── assistant.py
+├── planner.py
+├── tasks.py
 ├── db.py
 ├── main.py
-├── tasks.py
 ├── .env.example
 ├── .gitignore
 ├── requirements.txt
@@ -247,7 +266,7 @@ CREATE TABLE tasks (
     title VARCHAR(225),
     status VARCHAR(50),
     scheduled_date DATE,
-    estimated_duration TIME,
+    estimated_duration DECIMAL(4,2),
     priority VARCHAR(30)
 );
 ```
@@ -256,20 +275,20 @@ CREATE TABLE tasks (
 |---------|-------------|
 | id | Unique task ID |
 | title | Task title |
-| status | Current task status (e.g., pending, completed) |
-| scheduled_date | Date assigned to the task |
-| estimated_duration | Estimated time required to complete the task |
-| priority | Priority level (Low, Medium, High) |
+| status | Current task status |
+| scheduled_date | Scheduled task date |
+| estimated_duration | Estimated completion time |
+| priority | Task priority |
 
 ### 4. Configure Environment Variables
 
-Copy
+Copy:
 
 ```bash
 cp .env.example .env
 ```
 
-Add your API key
+Add your API key:
 
 ```env
 GEMINI_API_KEY=your_api_key_here
@@ -293,9 +312,6 @@ python main.py
 - App Automation
 - Task Management (MySQL CRUD)
 - AI Q&A
-
-### 🟡 In Progress
-
 - Smart Day Planner
 
 ### ⏳ Planned
@@ -313,8 +329,8 @@ python main.py
 
 ## Connect
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue)](https://www.linkedin.com/in/mohammed-abdul-aziz-/)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-black)](https://github.com/Aziz-coder-cell/ARIA)
 
 ---
 
-⭐ ARIA is an actively developed project. New features and improvements will be added progressively.
+⭐ ARIA is actively being developed. Each feature builds toward a fully autonomous AI-powered personal assistant.

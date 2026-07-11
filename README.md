@@ -159,28 +159,13 @@ Supports:
 
 ### Feature 5 — Smart Day Planner
 
-Provide:
-
-- Date
-- Tasks
-- Estimated duration
-- Priority
-
-ARIA generates an optimized schedule using Gemini AI.
-
-#### Planner Input
-
-![Planner Input](assets/Screenshot%20(4).png)
-
 #### Generated Plan
 
-![Planner Output 1](assets/Screenshot%20(5).png)
-
-![Planner Output 2](assets/Screenshot%20(6).png)
+![Planner Output](assets/Screenshot%20(4).png)
 
 #### View Saved Plan
 
-![View Plan](assets/Screenshot%20(7).png)
+![View Plan](assets/Screenshot%20(5).png)
 
 ---
 

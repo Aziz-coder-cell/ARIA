@@ -329,7 +329,7 @@ python main.py
 
 ## Connect
 
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-black)](https://github.com/Aziz-coder-cell/ARIA)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue)](https://www.linkedin.com/in/mohammed-abdul-aziz-/)
 
 ---
 

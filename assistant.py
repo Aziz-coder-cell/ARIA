@@ -3,6 +3,7 @@ from app_automation import open_app
 from db import close_connection
 from ai import ask_gemini
 from planner import details
+from ppt import generate_ppt
 
 def run_assistant():
     while True:
@@ -68,6 +69,15 @@ def run_assistant():
         
         elif cmd == "plan my day":
             details()
+
+        elif cmd == "make presentation":
+            topic = input("Enter the topic: ")
+            try:
+                num_slides = int(input("Enter the number of slides: "))
+            except ValueError:
+                print(f"Please enter the number of slides in digits")
+                continue
+            generate_ppt(topic, num_slides)
 
         else:
             print("Sorry, I didn't understand that command. Please try again.")

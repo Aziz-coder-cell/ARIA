@@ -14,6 +14,7 @@ ARIA is a lightweight AI-powered personal assistant built in Python that execute
 - Answers questions using Google Gemini AI
 - Generates AI-powered daily schedules
 - Saves accepted plans for future reference
+- Generates AI-powered PowerPoint presentations
 
 ---
 
@@ -73,6 +74,21 @@ Features:
 
 ---
 
+### ✅ Feature 6 — AI PPT Generation
+
+Generate a PowerPoint presentation by providing:
+
+- Presentation topic
+- Number of slides
+
+Features:
+
+- AI-generated slide titles and bullet points
+- Automatic `.pptx` generation using `python-pptx`
+- Saves the presentation locally
+
+---
+
 ## Supported Commands
 
 | Command | Action |
@@ -89,6 +105,7 @@ Features:
 | ask | Starts an AI conversation |
 | plan my day | Generates an AI-powered daily schedule |
 | view plan | Displays saved daily plans |
+| make presentation | Generates an AI-powered PowerPoint presentation |
 | exit | Closes the assistant |
 
 > Commands are case-insensitive.
@@ -98,28 +115,27 @@ Features:
 ## Architecture Flow
 
 ```text
-                            User
-                              │
-                              ▼
-                        Assistant (Router)
-                              │
-     ┌──────────────┬──────────┼──────────────┐
-     ▼              ▼          ▼              ▼
-App Automation   Task Manager  AI Module   Planner
-     │              │            │            │
-     ▼              ▼            ▼            ▼
- Opens Apps      MySQL CRUD   Gemini API   Collects Task Details
-      │              ▲            ▲            │
-      └──────────────┴────────────┴────────────┘
-                              │
-                              ▼
-                    Generates Daily Plan
-                              │
-                              ▼
-                   Save accepted tasks to MySQL (Optional)
-                              │
-                              ▼
-                    View Saved Plan (`view plan`)
+                              User
+                                │
+                                ▼
+                      Assistant (Command Router)
+                                │
+      ┌──────────┬──────────┬──────────┬────────────────┐
+      ▼          ▼          ▼          ▼                ▼
+App Automation   Tasks      AI Q&A    Planner     PPT Generator
+      │           │            │          │             │
+      ▼           ▼            ▼          ▼             ▼
+ Opens Apps   MySQL CRUD   Gemini API  Gemini API  Gemini API
+                  ▲                        │            │
+                  │                        ▼            ▼
+                  │               Generate Plan   Generate Slides
+                  │                        │            │
+                  └──────────────┬─────────┘            │
+                                 ▼                      ▼
+                       Save Scheduled Tasks      Create .pptx File
+                                 │
+                                 ▼
+                          View Saved Plan
 ```
 
 ---
@@ -169,6 +185,21 @@ Supports:
 
 ---
 
+### Feature 6 — AI PPT Generation
+
+Provide:
+
+- Presentation topic
+- Number of slides
+
+ARIA generates slide content using Gemini AI and automatically creates a PowerPoint presentation.
+
+#### PPT Generation
+
+![PPT Generation](assets/Screenshot%20(6).png)
+
+---
+
 ## Tech Stack
 
 - Python
@@ -179,6 +210,7 @@ Supports:
 - Google AI Studio
 - python-dotenv
 - subprocess
+- python-pptx
 
 ---
 
@@ -201,8 +233,7 @@ ARIA/
 │   ├── Screenshot (3).png
 │   ├── Screenshot (4).png
 │   ├── Screenshot (5).png
-│   ├── Screenshot (6).png
-│   └── Screenshot (7).png
+│   └── Screenshot (6).png
 │
 ├── ai.py
 ├── app_automation.py
@@ -210,6 +241,7 @@ ARIA/
 ├── planner.py
 ├── tasks.py
 ├── db.py
+├── ppt.py
 ├── main.py
 ├── .env.example
 ├── .gitignore
@@ -298,10 +330,10 @@ python main.py
 - Task Management (MySQL CRUD)
 - AI Q&A
 - Smart Day Planner
+- PPT Generation
 
 ### ⏳ Planned
 
-- PPT Generation
 - Research Assistant
 - Voice Integration
 - File Management

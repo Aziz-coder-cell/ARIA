@@ -41,3 +41,20 @@ def make_plan(task_details):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
         return "Something went wrong"
+    
+def ppt_details(prompt):
+    try:
+        print("Generating bullet points....")
+        response = client.models.generate_content(
+            model = "gemini-2.5-flash-lite",
+            contents = prompt 
+        )
+        return response.text
+    
+    except GoogleAPIError as e:
+        print(f"Google API Error occured: {e}")
+        return "A Google API error occurred while generating the response." 
+    
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        return "Something went wrong"

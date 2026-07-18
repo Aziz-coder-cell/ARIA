@@ -8,7 +8,9 @@ def details():
     response = ""
     task_details = []
     print("Fill the required details for planning your day. Type 'done' when you are finished.")
+
     date = input("Enter the date for the tasks (YYYY-MM-DD): ")
+    
     while feedback != 'yes':
         while sub_cmd.lower() != "done":
             sub_cmd = input("Enter a task: ")
@@ -28,6 +30,7 @@ def details():
         response = make_plan(task_details)
         print(f"Gemini's response: {response}")
         feedback = input("Is this plan acceptable? (yes/no): ")
+
         while feedback.lower() != 'yes' and feedback.lower() != 'no':
             feedback = input("Please enter a valid response (yes/no): ")
         if feedback.lower() == 'no':
@@ -37,7 +40,9 @@ def details():
             sub_cmd = 'xyz'
         elif feedback.lower() == 'yes':
             print("Great! Your plan has been accepted.")
+
     save_choice = input("Do you want to save these tasks? (yes/no): ")
+
     if save_choice.lower() == 'yes':
         task_name = []
         estimated_duration = []
